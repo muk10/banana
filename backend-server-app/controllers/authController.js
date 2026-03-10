@@ -65,10 +65,21 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
+    // Normalize email (lowercase and trim)
+    const normalizedEmail = email?.toLowerCase().trim();
+
+    if (!normalizedEmail || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+
     // Find user and include password for comparison
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email: normalizedEmail }).select("+password");
 
     if (!user) {
+      logger.warn(`Login attempt failed: User not found - ${normalizedEmail}`);
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
@@ -77,6 +88,7 @@ exports.login = async (req, res, next) => {
 
     // Check if user is blocked
     if (user.isBlocked) {
+      logger.warn(`Login attempt blocked: Account blocked - ${normalizedEmail}`);
       return res.status(403).json({
         success: false,
         message: "Account has been blocked. Please contact administrator.",
@@ -86,6 +98,7 @@ exports.login = async (req, res, next) => {
     // Check password
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
+      logger.warn(`Login attempt failed: Invalid password - ${normalizedEmail}`);
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
