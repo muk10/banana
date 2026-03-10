@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    if (!process.env.DB_URL) {
-      console.warn("⚠️  DB_URL environment variable is not set. Please create a .env file with DB_URL=mongodb://localhost:27017/your-database-name");
+    if (!process.env.MONGO_URI) {
+      console.warn("⚠️  MONGO_URI environment variable is not set. Please create a .env file with MONGO_URI=mongodb://localhost:27017/your-database-name");
       return;
     }
-    await mongoose.connect(process.env.DB_URL);
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("✅ Database connected successfully");
   } catch (err) {
     console.error("❌ Database connection error:", err.message);
