@@ -1,53 +1,56 @@
-import { useEffect, useState } from "react";
-import {
-  getMessages,
-  createMessage,
-  deleteMessage,
-  updateMessage as updateMessageService,
-} from "./services/messageService";
-
-import MessageForm from "./components/MessageForm";
-import MessageList from "./components/MessageList";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Cases from "./pages/Cases";
+import CaseDetails from "./pages/CaseDetails";
+import ZakatCalculator from "./pages/ZakatCalculator";
+import About from "./pages/About";
+import DonorDashboard from "./pages/DonorDashboard";
+import DoneeDashboard from "./pages/DoneeDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
-  const [messages, setMessages] = useState([]);
-
-  const fetchMessages = async () => {
-    const res = await getMessages();
-    setMessages(res.data);
-  };
-
-  useEffect(() => {
-    fetchMessages();
-  }, []);
-
-  const addMessage = async (text) => {
-    await createMessage(text);
-    fetchMessages();
-  };
-
-  const removeMessage = async (id) => {
-    await deleteMessage(id);
-    fetchMessages();
-  };
-
-  const updateMessage = async (id, text) => {
-    await updateMessageService(id, text);
-    fetchMessages();
-  };
-
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Messages</h1>
-
-      <MessageForm onAdd={addMessage} />
-
-      <MessageList
-        messages={messages}
-        onDelete={removeMessage}
-        onUpdate={updateMessage}
-      />
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/cases" element={<Cases />} />
+          <Route path="/cases/:id" element={<CaseDetails />} />
+          <Route path="/zakat-calculator" element={<ZakatCalculator />} />
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/donor/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["donor"]}>
+                <DonorDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/donee/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["donee"]}>
+                <DoneeDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 
