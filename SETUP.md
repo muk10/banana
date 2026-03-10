@@ -165,6 +165,10 @@ createAdmin();
 4. Set up Cloudinary production account
 5. Use Docker Compose for easy deployment
 6. Configure Nginx for frontend (already included in Docker setup)
+7. **Important**: Set `REACT_APP_API_URL` to your backend URL + `/api` (e.g., `https://your-backend.onrender.com/api`)
+   - ❌ Wrong: `https://your-backend.onrender.com/api/messages`
+   - ✅ Correct: `https://your-backend.onrender.com/api`
+8. Set `FRONTEND_URL` in backend to your frontend URL (e.g., `https://your-frontend.com`)
 
 ## Troubleshooting
 
@@ -175,8 +179,9 @@ createAdmin();
 
 ### Frontend can't connect to backend
 - Verify backend is running on port 5000
-- Check `REACT_APP_API_URL` in frontend `.env`
+- Check `REACT_APP_API_URL` in frontend `.env` - should be `http://localhost:5000/api` (note: ends with `/api`, NOT `/api/messages`)
 - Check CORS settings in backend
+- **Common issue**: If you see URLs like `/api/messages/cases/public`, your `REACT_APP_API_URL` is incorrectly set to include `/messages`. It should only be `/api`
 
 ### File uploads not working
 - Verify Cloudinary credentials
@@ -187,4 +192,12 @@ createAdmin();
 - Clear browser localStorage
 - Check JWT_SECRET is set correctly
 - Verify token expiration settings
+
+### CORS errors
+- **Development**: The backend now allows all `localhost` origins (ports 3000-3003) automatically
+- **Production**: Set `FRONTEND_URL` environment variable to your frontend URL (e.g., `https://your-frontend.com`)
+- If you see "blocked by CORS policy" errors, check that:
+  - Your frontend URL matches what's configured in backend `FRONTEND_URL`
+  - In development, the backend allows localhost origins automatically
+  - The backend is running and accessible
 
