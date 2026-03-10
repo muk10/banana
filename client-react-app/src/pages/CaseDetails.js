@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { caseService } from "../services/caseService";
 import { donationService } from "../services/donationService";
@@ -15,11 +15,7 @@ const CaseDetails = () => {
   const [donationId, setDonationId] = useState(null);
   const [proofFile, setProofFile] = useState(null);
 
-  useEffect(() => {
-    fetchCase();
-  }, [id]);
-
-  const fetchCase = async () => {
+  const fetchCase = useCallback(async () => {
     setLoading(true);
     try {
       const response = await caseService.getCaseById(id);
@@ -31,7 +27,11 @@ const CaseDetails = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchCase();
+  }, [fetchCase]);
 
   const handlePledge = async (e) => {
     e.preventDefault();
@@ -108,7 +108,7 @@ const CaseDetails = () => {
               <img
                 key={idx}
                 src={img.url}
-                alt={`Case image ${idx + 1}`}
+                alt={`Case ${idx + 1}`}
                 className="w-full h-64 object-cover rounded"
               />
             ))}

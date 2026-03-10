@@ -19,7 +19,6 @@ const ZakatCalculator = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm({
     resolver: zodResolver(zakatSchema),
     defaultValues: {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { caseService } from "../services/caseService";
 
@@ -8,11 +8,7 @@ const Cases = () => {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
 
-  useEffect(() => {
-    fetchCases();
-  }, [page]);
-
-  const fetchCases = async () => {
+  const fetchCases = useCallback(async () => {
     setLoading(true);
     try {
       const response = await caseService.getPublicCases(page, 10);
@@ -25,7 +21,11 @@ const Cases = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page]);
+
+  useEffect(() => {
+    fetchCases();
+  }, [fetchCases]);
 
   if (loading) {
     return (
