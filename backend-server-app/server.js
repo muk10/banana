@@ -26,6 +26,7 @@ connectDB();
 app.use(helmet());
 
 // CORS configuration - allow multiple origins
+const isDevelopment = process.env.NODE_ENV !== 'production';
 const allowedOrigins = process.env.FRONTEND_URL 
   ? process.env.FRONTEND_URL.split(',').map(url => url.trim())
   : [];
@@ -40,14 +41,26 @@ app.use(cors({
       return callback(null, true);
     }
     
-    // Check against configured allowed origins
-    if (allowedOrigins.length === 0 || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
+    // In development, allow all origins (for testing)
+    if (isDevelopment) {
+      return callback(null, true);
+    }
+    
+    // In production, check against configured allowed origins
+    if (allowedOrigins.length > 0) {
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Not allowed by CORS. Origin: ${origin} not in allowed list`));
+      }
     } else {
-      callback(new Error('Not allowed by CORS'));
+      // If no FRONTEND_URL is set in production, deny all non-localhost origins
+      callback(new Error('CORS: FRONTEND_URL environment variable must be set in production'));
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Body parser

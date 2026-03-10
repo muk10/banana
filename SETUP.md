@@ -168,7 +168,10 @@ createAdmin();
 7. **Important**: Set `REACT_APP_API_URL` to your backend URL + `/api` (e.g., `https://your-backend.onrender.com/api`)
    - ❌ Wrong: `https://your-backend.onrender.com/api/messages`
    - ✅ Correct: `https://your-backend.onrender.com/api`
-8. Set `FRONTEND_URL` in backend to your frontend URL (e.g., `https://your-frontend.com`)
+8. **Critical for CORS**: Set `FRONTEND_URL` in backend environment variables to your frontend URL(s)
+   - For single frontend: `https://your-frontend.vercel.app`
+   - For multiple frontends (comma-separated): `https://your-frontend.vercel.app,https://another-frontend.com`
+   - This allows your frontend to make API requests without CORS errors
 
 ## Troubleshooting
 
@@ -195,9 +198,12 @@ createAdmin();
 
 ### CORS errors
 - **Development**: The backend now allows all `localhost` origins (ports 3000-3003) automatically
-- **Production**: Set `FRONTEND_URL` environment variable to your frontend URL (e.g., `https://your-frontend.com`)
-- If you see "blocked by CORS policy" errors, check that:
-  - Your frontend URL matches what's configured in backend `FRONTEND_URL`
-  - In development, the backend allows localhost origins automatically
-  - The backend is running and accessible
+- **Production**: Set `FRONTEND_URL` environment variable in your backend service (e.g., on Render) to your frontend URL
+  - Single frontend: `https://your-frontend.vercel.app`
+  - Multiple frontends: `https://frontend1.com,https://frontend2.com` (comma-separated)
+- If you see "blocked by CORS policy" or "preflight request doesn't pass" errors:
+  - Check that `FRONTEND_URL` is set correctly in your backend environment variables
+  - Make sure the URL matches exactly (including `https://` and no trailing slash)
+  - Restart/redeploy your backend after changing `FRONTEND_URL`
+  - In development, localhost origins are allowed automatically
 

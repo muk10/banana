@@ -45,11 +45,25 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Hash password before saving
+// Hash password before saving (only if password is plain text)
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
+  // Only hash the password if it has been modified (or is new)
+  if (!this.isModified("password")) {
+    return next();
+  }
+  
+  // Check if password is already hashed (bcrypt hashes start with $2a$, $2b$, or $2y$)
+  if (this.password && this.password.startsWith('$2')) {
+    return next();
+  }
+  
+  try {
+    const saltRounds = 12;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Compare password method
