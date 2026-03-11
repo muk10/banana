@@ -133,8 +133,8 @@ exports.approveCaseSchema = z.object({
   }),
 });
 
-// Zakat Calculator Validator
-exports.zakatCalculatorSchema = z.object({
+// Charity Calculator Validator
+exports.charityCalculatorSchema = z.object({
   body: z.object({
     savings: z.number().min(0, "Savings cannot be negative").default(0),
     gold: z.number().min(0, "Gold value cannot be negative").default(0),

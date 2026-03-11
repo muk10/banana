@@ -1,6 +1,6 @@
-# Zakat & Charity Platform
+# Charity Platform
 
-A full-stack MERN application for managing charity and zakat donations with transparent case management, peer review, and donation tracking.
+A full-stack MERN application for managing charity donations with transparent case management, peer review, and donation tracking.
 
 ## Features
 
@@ -8,7 +8,7 @@ A full-stack MERN application for managing charity and zakat donations with tran
 - **Case Management**: Submit, review, and approve financial assistance cases
 - **Peer Review System**: Community-driven case verification
 - **Donation Tracking**: Pledge, payment proof upload, and verification
-- **Zakat Calculator**: Calculate zakat based on wealth and assets
+- **Charity Calculator**: Calculate charity based on wealth and assets
 - **Admin Dashboard**: Analytics, case management, and user administration
 - **Security**: JWT authentication, role-based access, rate limiting, input validation
 - **Privacy Protection**: Sensitive data is never exposed publicly
@@ -146,8 +146,8 @@ docker-compose up -d
 - `GET /api/admin/users` - Get all users
 - `PUT /api/admin/users/:id/block` - Block/unblock user
 
-### Zakat Calculator
-- `POST /api/zakat/calculate` - Calculate zakat
+### Charity Calculator
+- `POST /api/charity/calculate` - Calculate charity
 
 ## Workflow
 

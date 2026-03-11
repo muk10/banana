@@ -1,12 +1,12 @@
-// @desc    Calculate Zakat
-// @route   POST /api/zakat/calculate
+// @desc    Calculate Charity
+// @route   POST /api/charity/calculate
 // @access  Public
-exports.calculateZakat = async (req, res, next) => {
+exports.calculateCharity = async (req, res, next) => {
   try {
     const { savings, gold, silver, investments, debts } = req.body;
 
-    // Zakat calculation formula
-    // Zakat = 2.5% of eligible wealth
+    // Charity calculation formula
+    // Charity = 2.5% of eligible wealth
     // Eligible wealth = (savings + gold + silver + investments) - debts
     // Nisab threshold: Value of 85g of gold or 595g of silver (using gold as standard)
 
@@ -29,8 +29,8 @@ exports.calculateZakat = async (req, res, next) => {
     // Check if eligible wealth meets nisab threshold
     const meetsNisab = eligibleWealth >= nisabValue;
 
-    // Calculate zakat (2.5% of eligible wealth)
-    const zakatAmount = meetsNisab ? eligibleWealth * 0.025 : 0;
+    // Calculate charity (2.5% of eligible wealth)
+    const charityAmount = meetsNisab ? eligibleWealth * 0.025 : 0;
 
     // Calculate breakdown
     const breakdown = {
@@ -43,15 +43,15 @@ exports.calculateZakat = async (req, res, next) => {
       eligibleWealth,
       nisabValue,
       meetsNisab,
-      zakatAmount: Math.round(zakatAmount * 100) / 100, // Round to 2 decimal places
-      zakatPercentage: 2.5,
+      charityAmount: Math.round(charityAmount * 100) / 100, // Round to 2 decimal places
+      charityPercentage: 2.5,
     };
 
     res.json({
       success: true,
       message: meetsNisab
-        ? "Zakat calculation completed"
-        : "Wealth does not meet nisab threshold. No zakat is due.",
+        ? "Charity calculation completed"
+        : "Wealth does not meet nisab threshold. No charity is due.",
       data: breakdown,
     });
   } catch (error) {

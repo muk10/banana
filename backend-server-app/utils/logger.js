@@ -15,7 +15,7 @@ const logger = winston.createLogger({
     winston.format.errors({ stack: true }),
     winston.format.json()
   ),
-  defaultMeta: { service: "zakat-platform" },
+  defaultMeta: { service: "charity-platform" },
   transports: [
     // Write all logs to console
     new winston.transports.Console({

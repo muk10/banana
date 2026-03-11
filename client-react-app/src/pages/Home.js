@@ -5,7 +5,7 @@ const Home = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome to Zakat Platform
+          Welcome to Charity Platform
         </h1>
         <p className="text-xl text-gray-600 mb-8">
           Connecting donors with those in need
@@ -18,10 +18,10 @@ const Home = () => {
             Browse Cases
           </Link>
           <Link
-            to="/zakat-calculator"
+            to="/charity-calculator"
             className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300"
           >
-            Calculate Zakat
+            Calculate Charity
           </Link>
         </div>
       </div>

@@ -5,15 +5,15 @@ const About = () => {
 
       <div className="prose max-w-none">
         <p className="text-gray-700 mb-6">
-          The Zakat Platform is a transparent, secure, and community-driven platform
-          designed to facilitate charitable giving and zakat distribution. We connect
+          The Charity Platform is a transparent, secure, and community-driven platform
+          designed to facilitate charitable giving and charity distribution. We connect
           donors with verified cases of individuals and families in need of financial
           assistance.
         </p>
 
         <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
         <p className="text-gray-700 mb-6">
-          To create a transparent and efficient system for zakat and charity distribution,
+          To create a transparent and efficient system for charity distribution,
           ensuring that donations reach those who need them most while maintaining
           accountability and trust.
         </p>

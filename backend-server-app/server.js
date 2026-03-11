@@ -14,7 +14,7 @@ const donationRoutes = require("./routes/donationRoutes");
 const peerReviewRoutes = require("./routes/peerReviewRoutes");
 const queryRoutes = require("./routes/queryRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-const zakatRoutes = require("./routes/zakatRoutes");
+const charityRoutes = require("./routes/charityRoutes");
 
 // Initialize app
 const app = express();
@@ -95,7 +95,7 @@ app.use("/api/donations", donationRoutes);
 app.use("/api/reviews", peerReviewRoutes);
 app.use("/api/queries", queryRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/zakat", zakatRoutes);
+app.use("/api/charity", charityRoutes);
 
 // 404 handler
 app.use((req, res) => {

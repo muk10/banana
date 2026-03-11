@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
       <main>{children}</main>
       <footer className="bg-gray-800 text-white mt-12">
         <div className="max-w-7xl mx-auto py-8 px-4 text-center">
-          <p>&copy; 2024 Zakat Platform. All rights reserved.</p>
+          <p>&copy; 2024 Charity Platform. All rights reserved.</p>
         </div>
       </footer>
     </div>

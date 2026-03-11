@@ -1,7 +1,7 @@
 const cloudinary = require("../config/cloudinary");
 const { Readable } = require("stream");
 
-const uploadToCloudinary = (buffer, folder = "zakat-platform") => {
+const uploadToCloudinary = (buffer, folder = "charity-platform") => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {

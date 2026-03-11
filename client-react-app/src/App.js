@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cases from "./pages/Cases";
 import CaseDetails from "./pages/CaseDetails";
-import ZakatCalculator from "./pages/ZakatCalculator";
+import CharityCalculator from "./pages/CharityCalculator";
 import About from "./pages/About";
 import DonorDashboard from "./pages/DonorDashboard";
 import DoneeDashboard from "./pages/DoneeDashboard";
@@ -22,7 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/cases" element={<Cases />} />
           <Route path="/cases/:id" element={<CaseDetails />} />
-          <Route path="/zakat-calculator" element={<ZakatCalculator />} />
+          <Route path="/charity-calculator" element={<CharityCalculator />} />
           <Route path="/about" element={<About />} />
           <Route
             path="/donor/dashboard"

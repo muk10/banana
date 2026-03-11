@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { zakatService } from "../services/zakatService";
+import { charityService } from "../services/charityService";
 
-const zakatSchema = z.object({
+const charitySchema = z.object({
   savings: z.number().min(0).default(0),
   gold: z.number().min(0).default(0),
   silver: z.number().min(0).default(0),
@@ -12,7 +12,7 @@ const zakatSchema = z.object({
   debts: z.number().min(0).default(0),
 });
 
-const ZakatCalculator = () => {
+const CharityCalculator = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,7 @@ const ZakatCalculator = () => {
     register,
     handleSubmit,
   } = useForm({
-    resolver: zodResolver(zakatSchema),
+    resolver: zodResolver(charitySchema),
     defaultValues: {
       savings: 0,
       gold: 0,
@@ -33,7 +33,7 @@ const ZakatCalculator = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await zakatService.calculateZakat(data);
+      const response = await charityService.calculateCharity(data);
       if (response.success) {
         setResult(response.data);
       }
@@ -47,9 +47,9 @@ const ZakatCalculator = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Zakat Calculator</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Charity Calculator</h1>
         <p className="text-gray-600">
-          Calculate your Zakat obligation based on your wealth
+          Calculate your Charity obligation based on your wealth
         </p>
       </div>
 
@@ -119,7 +119,7 @@ const ZakatCalculator = () => {
               disabled={loading}
               className="w-full bg-primary-600 text-white py-2 rounded-md hover:bg-primary-700 disabled:opacity-50"
             >
-              {loading ? "Calculating..." : "Calculate Zakat"}
+              {loading ? "Calculating..." : "Calculate Charity"}
             </button>
           </form>
         </div>
@@ -157,12 +157,12 @@ const ZakatCalculator = () => {
 
               <div className="p-4 bg-primary-50 rounded">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-2">Your Zakat Amount</p>
+                  <p className="text-sm text-gray-600 mb-2">Your Charity Amount</p>
                   <p className="text-3xl font-bold text-primary-700">
-                    ${result.zakatAmount?.toLocaleString()}
+                    ${result.charityAmount?.toLocaleString()}
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
-                    ({result.zakatPercentage}% of eligible wealth)
+                    ({result.charityPercentage}% of eligible wealth)
                   </p>
                 </div>
               </div>
@@ -170,7 +170,7 @@ const ZakatCalculator = () => {
               {!result.meetsNisab && (
                 <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
                   <p className="text-yellow-800">
-                    Your wealth does not meet the nisab threshold. No Zakat is due.
+                    Your wealth does not meet the nisab threshold. No Charity is due.
                   </p>
                 </div>
               )}
@@ -178,14 +178,14 @@ const ZakatCalculator = () => {
               <div className="mt-4 text-sm text-gray-600">
                 <p className="font-semibold mb-2">Note:</p>
                 <p>
-                  Zakat is calculated as 2.5% of your eligible wealth (total assets minus
+                  Charity is calculated as 2.5% of your eligible wealth (total assets minus
                   debts) if it meets or exceeds the nisab threshold.
                 </p>
               </div>
             </div>
           ) : (
             <div className="text-center text-gray-500 py-12">
-              Enter your assets and click "Calculate Zakat" to see the result.
+              Enter your assets and click "Calculate Charity" to see the result.
             </div>
           )}
         </div>
@@ -194,5 +194,5 @@ const ZakatCalculator = () => {
   );
 };
 
-export default ZakatCalculator;
+export default CharityCalculator;
 
