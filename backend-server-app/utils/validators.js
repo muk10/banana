@@ -29,17 +29,18 @@ exports.createCaseSchema = z.object({
     cnic: z.string().min(13, "CNIC must be at least 13 characters").trim(),
     city: z.string().min(2, "City is required").trim(),
     address: z.string().min(10, "Address is required").trim(),
-    familyMembers: z.number().int().min(1, "Family members must be at least 1"),
+    // multipart/form-data sends numbers as strings — coerce
+    familyMembers: z.coerce.number().int().min(1, "Family members must be at least 1"),
     dependents: z.string().min(1, "Dependents information is required").trim(),
-    income: z.number().min(0, "Income cannot be negative"),
-    expenses: z.number().min(0, "Expenses cannot be negative"),
+    income: z.coerce.number().min(0, "Income cannot be negative"),
+    expenses: z.coerce.number().min(0, "Expenses cannot be negative"),
     description: z
       .string()
       .min(50, "Description must be at least 50 characters")
       .max(5000, "Description cannot exceed 5000 characters")
       .trim(),
     amountRequired: z
-      .number()
+      .coerce.number()
       .positive("Amount must be greater than 0")
       .max(10000000, "Amount exceeds maximum limit"),
     bankDetails: z
@@ -63,7 +64,7 @@ exports.updateCaseSchema = z.object({
       .max(5000, "Description cannot exceed 5000 characters")
       .optional(),
     amountRequired: z
-      .number()
+      .coerce.number()
       .positive("Amount must be greater than 0")
       .optional(),
     bankDetails: z
