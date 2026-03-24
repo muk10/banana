@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart,
@@ -37,17 +37,7 @@ const AdminDashboard = () => {
   const [casesLoading, setCasesLoading] = useState(false);
   const [casesPage, setCasesPage] = useState(1);
 
-  useEffect(() => {
-    fetchReports();
-  }, []);
-
-  useEffect(() => {
-    if (activeTab === "cases") {
-      fetchAdminCases();
-    }
-  }, [activeTab, casesPage]);
-
-  const fetchReports = async () => {
+  const fetchReports = useCallback(async () => {
     setReportsLoading(true);
     try {
       const response = await adminService.getReports();
@@ -59,9 +49,9 @@ const AdminDashboard = () => {
     } finally {
       setReportsLoading(false);
     }
-  };
+  }, []);
 
-  const fetchAdminCases = async () => {
+  const fetchAdminCases = useCallback(async () => {
     setCasesLoading(true);
     try {
       const response = await adminService.getAdminCases(casesPage, 50);
@@ -73,7 +63,17 @@ const AdminDashboard = () => {
     } finally {
       setCasesLoading(false);
     }
-  };
+  }, [casesPage]);
+
+  useEffect(() => {
+    fetchReports();
+  }, [fetchReports]);
+
+  useEffect(() => {
+    if (activeTab === "cases") {
+      fetchAdminCases();
+    }
+  }, [activeTab, fetchAdminCases]);
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
