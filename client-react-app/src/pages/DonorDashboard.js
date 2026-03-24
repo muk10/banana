@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { caseService } from "../services/caseService";
 import { donationService } from "../services/donationService";
+import { formatPkr } from "../utils/formatPkr";
+import { humanizeStatus } from "../utils/humanizeStatus";
 
 const DonorDashboard = () => {
   const [cases, setCases] = useState([]);
@@ -57,7 +59,9 @@ const DonorDashboard = () => {
                   <p className="text-sm text-gray-600">{caseItem.city}</p>
                   <div className="mt-2">
                     <div className="flex justify-between text-sm">
-                      <span>${caseItem.amountRaised} / ${caseItem.amountRequired}</span>
+                      <span>
+                        {formatPkr(caseItem.amountRaised)} / {formatPkr(caseItem.amountRequired)}
+                      </span>
                       <span>
                         {Math.round(
                           (caseItem.amountRaised / caseItem.amountRequired) * 100
@@ -106,10 +110,10 @@ const DonorDashboard = () => {
                         {donation.caseId?.applicantName || "Case"}
                       </p>
                       <p className="text-sm text-gray-600">
-                        Amount: ${donation.pledgedAmount}
+                        Amount: {formatPkr(donation.pledgedAmount)}
                       </p>
                       <p className="text-sm text-gray-600">
-                        Status: {donation.status}
+                        Status: {humanizeStatus(donation.status)}
                       </p>
                     </div>
                     <span
@@ -121,7 +125,7 @@ const DonorDashboard = () => {
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {donation.status}
+                      {humanizeStatus(donation.status)}
                     </span>
                   </div>
                 </div>

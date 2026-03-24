@@ -69,7 +69,7 @@ exports.getPublicCases = async (req, res, next) => {
 
     const filter = {
       status: "approved",
-      isExpired: false,
+      isExpired: { $ne: true },
       expiresAt: { $gt: new Date() },
     };
 

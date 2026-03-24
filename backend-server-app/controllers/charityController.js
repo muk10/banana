@@ -1,4 +1,4 @@
-// @desc    Calculate Charity
+// @desc    Calculate Zakat (2.5% of eligible wealth above nisab; amounts in PKR)
 // @route   POST /api/charity/calculate
 // @access  Public
 exports.calculateCharity = async (req, res, next) => {
@@ -50,8 +50,8 @@ exports.calculateCharity = async (req, res, next) => {
     res.json({
       success: true,
       message: meetsNisab
-        ? "Charity calculation completed"
-        : "Wealth does not meet nisab threshold. No charity is due.",
+        ? "Zakat calculation completed"
+        : "Wealth does not meet nisab threshold. No Zakat is due.",
       data: breakdown,
     });
   } catch (error) {

@@ -13,12 +13,13 @@ const {
   updateCaseSchema,
 } = require("../utils/validators");
 const authMiddleware = require("../middleware/authMiddleware");
+const optionalAuthMiddleware = require("../middleware/optionalAuthMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
 const { uploadImages, uploadDocuments } = require("../middleware/uploadMiddleware");
 
-// Public routes
+// Public routes (optional auth so admin/donee can see non-approved cases when logged in)
 router.get("/public", getPublicCases);
-router.get("/:id", getCaseById);
+router.get("/:id", optionalAuthMiddleware, getCaseById);
 
 // Protected routes
 router.post(

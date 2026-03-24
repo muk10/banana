@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
 import { caseService } from "../services/caseService";
+import {
+  formatPkr,
+  formatNumericInputString,
+  formatIntegerInputString,
+} from "../utils/formatPkr";
+import { humanizeStatus } from "../utils/humanizeStatus";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -27,6 +33,21 @@ const friendlyServerMessage = (message) => {
     return "Please enter a valid number.";
   }
   return message;
+};
+
+/** User-facing labels for API case statuses */
+const CASE_STATUS_LABELS = {
+  pending: "Pending review",
+  peer_review: "In review",
+  under_admin_review: "More information needed",
+  approved: "Approved",
+  rejected: "Declined",
+  funded: "Fully funded",
+};
+
+const CASE_STATUS_HINTS = {
+  under_admin_review:
+    "An administrator may have left feedback—please review your case and submit any updates requested.",
 };
 
 const DoneeDashboard = () => {
@@ -72,6 +93,7 @@ const DoneeDashboard = () => {
     const n = parseInt(raw, 10);
     if (!Number.isNaN(n)) {
       setValue(fieldName, n, { shouldValidate: true, shouldDirty: true });
+      e.target.value = formatIntegerInputString(n);
     }
   };
 
@@ -80,7 +102,9 @@ const DoneeDashboard = () => {
     if (raw === "" || raw === "-") return;
     const n = parseFloat(raw);
     if (!Number.isNaN(n)) {
-      setValue(fieldName, n, { shouldValidate: true, shouldDirty: true });
+      const rounded = Math.round(n * 100) / 100;
+      setValue(fieldName, rounded, { shouldValidate: true, shouldDirty: true });
+      e.target.value = formatNumericInputString(rounded);
     }
   };
 
@@ -168,12 +192,16 @@ const DoneeDashboard = () => {
     const colors = {
       pending: "bg-yellow-100 text-yellow-800",
       peer_review: "bg-blue-100 text-blue-800",
+      under_admin_review: "bg-orange-100 text-orange-900",
       approved: "bg-green-100 text-green-800",
       rejected: "bg-red-100 text-red-800",
       funded: "bg-purple-100 text-purple-800",
     };
     return colors[status] || "bg-gray-100 text-gray-800";
   };
+
+  const getStatusLabel = (status) =>
+    CASE_STATUS_LABELS[status] || humanizeStatus(status);
 
   if (loading) {
     return (
@@ -302,7 +330,7 @@ const DoneeDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Income ($) *</label>
+                <label className="block text-sm font-medium mb-1">Income (PKR) *</label>
                 <input
                   {...incomeField}
                   onBlur={(e) => {
@@ -311,7 +339,7 @@ const DoneeDashboard = () => {
                   }}
                   type="number"
                   min="0"
-                  step="0.01"
+                  step="any"
                   className="w-full px-4 py-2 border rounded-md"
                 />
                 {errors.income && (
@@ -321,7 +349,7 @@ const DoneeDashboard = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Expenses ($) *
+                  Expenses (PKR) *
                 </label>
                 <input
                   {...expensesField}
@@ -331,7 +359,7 @@ const DoneeDashboard = () => {
                   }}
                   type="number"
                   min="0"
-                  step="0.01"
+                  step="any"
                   className="w-full px-4 py-2 border rounded-md"
                 />
                 {errors.expenses && (
@@ -355,7 +383,7 @@ const DoneeDashboard = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Amount Required ($) *
+                  Amount required (PKR) *
                 </label>
                 <input
                   {...amountRequiredField}
@@ -365,7 +393,7 @@ const DoneeDashboard = () => {
                   }}
                   type="number"
                   min="1"
-                  step="0.01"
+                  step="any"
                   className="w-full px-4 py-2 border rounded-md"
                 />
                 {errors.amountRequired && (
@@ -429,8 +457,8 @@ const DoneeDashboard = () => {
                     <p className="text-gray-700 mt-2">{caseItem.description}</p>
                     <div className="mt-4">
                       <p className="text-sm">
-                        Amount: ${caseItem.amountRaised} / $
-                        {caseItem.amountRequired}
+                        Raised: {formatPkr(caseItem.amountRaised)} /{" "}
+                        {formatPkr(caseItem.amountRequired)}
                       </p>
                       <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                         <div
@@ -444,13 +472,18 @@ const DoneeDashboard = () => {
                         ></div>
                       </div>
                     </div>
+                    {CASE_STATUS_HINTS[caseItem.status] && (
+                      <p className="text-sm text-gray-600 mt-3 max-w-xl">
+                        {CASE_STATUS_HINTS[caseItem.status]}
+                      </p>
+                    )}
                   </div>
                   <span
-                    className={`px-3 py-1 rounded text-sm ${getStatusColor(
+                    className={`shrink-0 px-3 py-1 rounded text-sm font-medium text-center max-w-[11rem] ${getStatusColor(
                       caseItem.status
                     )}`}
                   >
-                    {caseItem.status.replace("_", " ")}
+                    {getStatusLabel(caseItem.status)}
                   </span>
                 </div>
               </div>

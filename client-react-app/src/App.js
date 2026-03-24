@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
@@ -22,7 +22,11 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/cases" element={<Cases />} />
           <Route path="/cases/:id" element={<CaseDetails />} />
-          <Route path="/charity-calculator" element={<CharityCalculator />} />
+          <Route
+            path="/charity-calculator"
+            element={<Navigate to="/zakat-calculator" replace />}
+          />
+          <Route path="/zakat-calculator" element={<CharityCalculator />} />
           <Route path="/about" element={<About />} />
           <Route
             path="/donor/dashboard"

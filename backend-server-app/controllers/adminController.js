@@ -211,10 +211,10 @@ exports.getReports = async (req, res, next) => {
       },
     ]);
 
-    // Active cases
+    // Active cases: open for fundraising / review (treat missing isExpired as not expired)
     const activeCases = await Case.countDocuments({
       status: { $in: ["approved", "peer_review"] },
-      isExpired: false,
+      isExpired: { $ne: true },
     });
 
     // Funded cases

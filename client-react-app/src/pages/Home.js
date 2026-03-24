@@ -18,10 +18,10 @@ const Home = () => {
             Browse Cases
           </Link>
           <Link
-            to="/charity-calculator"
+            to="/zakat-calculator"
             className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300"
           >
-            Calculate Charity
+            Zakat Calculator
           </Link>
         </div>
       </div>

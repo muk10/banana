@@ -34,10 +34,10 @@ const Navbar = () => {
                 Cases
               </Link>
               <Link
-                to="/charity-calculator"
+                to="/zakat-calculator"
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                Charity Calculator
+                Zakat Calculator
               </Link>
               <Link
                 to="/about"
@@ -74,7 +74,7 @@ const Navbar = () => {
                     to="/admin/dashboard"
                     className="text-gray-700 hover:text-primary-600"
                   >
-                    Admin
+                    Dashboard
                   </Link>
                 )}
                 <button

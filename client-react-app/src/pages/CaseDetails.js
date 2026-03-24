@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { caseService } from "../services/caseService";
 import { donationService } from "../services/donationService";
 import useAuthStore from "../store/authStore";
+import { formatPkr, formatPercentDisplay, formatNumericInputString } from "../utils/formatPkr";
 
 const CaseDetails = () => {
   const { id } = useParams();
@@ -123,8 +124,8 @@ const CaseDetails = () => {
             <div className="flex justify-between text-sm mb-2">
               <span className="text-gray-600">Funding Progress</span>
               <span className="font-semibold">
-                ${caseItem.amountRaised?.toLocaleString()} / $
-                {caseItem.amountRequired?.toLocaleString()} ({progress.toFixed(1)}%)
+                {formatPkr(caseItem.amountRaised)} / {formatPkr(caseItem.amountRequired)} (
+                {formatPercentDisplay(progress)}%)
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-4">
@@ -157,14 +158,23 @@ const CaseDetails = () => {
                 <form onSubmit={handlePledge}>
                   <div className="mb-4">
                     <label className="block text-sm font-medium mb-2">
-                      Pledge Amount ($)
+                      Pledge amount (PKR)
                     </label>
                     <input
                       type="number"
                       min="1"
-                      step="0.01"
+                      step="any"
                       value={pledgeAmount}
                       onChange={(e) => setPledgeAmount(e.target.value)}
+                      onBlur={(e) => {
+                        const raw = e.target.value.trim();
+                        if (raw === "") return;
+                        const n = parseFloat(raw);
+                        if (!Number.isNaN(n)) {
+                          const rounded = Math.round(n * 100) / 100;
+                          setPledgeAmount(formatNumericInputString(rounded));
+                        }
+                      }}
                       className="w-full px-4 py-2 border rounded-md"
                       required
                     />

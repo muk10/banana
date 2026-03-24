@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { caseService } from "../services/caseService";
+import { formatPkr } from "../utils/formatPkr";
 
 const Cases = () => {
   const [cases, setCases] = useState([]);
@@ -68,8 +69,8 @@ const Cases = () => {
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-gray-600">Raised</span>
                     <span className="font-semibold">
-                      ${caseItem.amountRaised?.toLocaleString()} / $
-                      {caseItem.amountRequired?.toLocaleString()}
+                      {formatPkr(caseItem.amountRaised)} /{" "}
+                      {formatPkr(caseItem.amountRequired)}
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
